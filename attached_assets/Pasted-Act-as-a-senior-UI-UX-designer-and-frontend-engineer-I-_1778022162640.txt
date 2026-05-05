@@ -1,0 +1,127 @@
+Act as a senior UI/UX designer and frontend engineer.
+
+I have a React E-commerce website and I want to transform it into a premium, modern, high-end product similar in quality to Amazon and top global e-commerce platforms.
+
+🎯 Main Goal:
+Create a visually stunning, highly responsive, and conversion-focused UI/UX using Bootstrap as a base, but heavily customized to feel unique and modern (NOT default Bootstrap look).
+
+━━━━━━━━━━━━━━━━━━━━━━
+
+🔵 DESIGN REQUIREMENTS:
+
+1. Use Bootstrap (latest version) BUT enhance it with:
+   
+   - Advanced custom CSS
+   - Modern layout systems (Flexbox + Grid)
+   - Clean and scalable structure
+
+2. Apply high-end visual effects:
+   
+   - Smooth animations (hover effects, transitions, micro-interactions)
+   - Glassmorphism (blur backgrounds, transparent cards)
+   - Soft shadows (modern depth, not heavy)
+   - Subtle gradients (professional, not flashy)
+   - Large and consistent spacing (clean, breathable UI — not crowded)
+
+3. Fully Responsive Design:
+   
+   - Mobile-first approach
+   - Perfect scaling on phones, tablets, and desktops
+   - Adaptive layouts and flexible components
+
+━━━━━━━━━━━━━━━━━━━━━━
+
+🟣 UI IMPROVEMENTS (ALL PAGES):
+
+Improve and redesign the following pages:
+
+- Home Page:
+  
+  - Hero section with strong visual impact
+  - Featured products carousel
+  - Categories section with icons/images
+  - Promotional banners
+
+- Product Listing Page:
+  
+  - Advanced filtering (price, category, rating)
+  - Sorting options
+  - Grid/List toggle
+  - Lazy loading
+
+- Product Details Page:
+  
+  - Image gallery with zoom
+  - Reviews & ratings UI
+  - Add to cart + wishlist
+  - Related products
+
+- Cart Page:
+  
+  - Clean layout
+  - Quantity control
+  - Price breakdown
+
+- Checkout Page:
+  
+  - Step-based UI
+  - Address + payment forms
+  - Order summary
+
+- Authentication Pages:
+  
+  - Modern login/register UI
+  - Smooth transitions
+
+━━━━━━━━━━━━━━━━━━━━━━
+
+🟢 MODERN UI FEATURES:
+
+- Sticky navbar
+- Mega menu (like Amazon)
+- Product cards with advanced hover effects
+- Skeleton loading screens
+- Toast notifications
+- Smooth page transitions
+- Dark mode support
+- Floating buttons (cart, scroll-to-top)
+
+━━━━━━━━━━━━━━━━━━━━━━
+
+🟡 DESIGN SYSTEM IMPROVEMENTS:
+
+- Typography system (modern fonts, hierarchy)
+- Color palette (primary, secondary, neutral tones)
+- Spacing system (consistent margins & padding)
+- Button styles (rounded, animated, modern)
+- Icon system (use modern icon libraries)
+
+━━━━━━━━━━━━━━━━━━━━━━
+
+🔴 FRONTEND ARCHITECTURE:
+
+- Suggest reusable React components
+- Clean folder structure
+- Component-based UI system
+- Scalable styling approach
+
+━━━━━━━━━━━━━━━━━━━━━━
+
+💡 INSPIRATION:
+
+Make the design inspired by:
+
+- Amazon (structure & usability)
+- Apple (clean and premium look)
+- Modern SaaS dashboards
+
+━━━━━━━━━━━━━━━━━━━━━━
+
+📦 OUTPUT REQUIRED:
+
+- Detailed UI improvements
+- Component ideas
+- Styling strategies
+- Real implementation suggestions (not just theory)
+
+The final result should look like a production-level, high-end e-commerce website suitable for real users.

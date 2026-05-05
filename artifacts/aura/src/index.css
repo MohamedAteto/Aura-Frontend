@@ -503,3 +503,106 @@
 /* Misc utils */
 .glass { background: hsl(258 30% 12% / 0.6); backdrop-filter: blur(16px); border: 1px solid hsl(258 26% 22%); }
 .gradient-text { background: linear-gradient(135deg, var(--aura-violet), var(--aura-sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+
+/* ── Scroll-to-top floating button ───────────────────────── */
+.scroll-top { position: fixed; bottom: 2rem; right: 2rem; width: 44px; height: 44px; background: hsl(258 30% 16% / 0.85); border: 1px solid hsl(258 26% 30%); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 90; backdrop-filter: blur(16px); color: hsl(252 100% 97%); transition: all 0.2s; box-shadow: 0 8px 24px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.06); }
+.scroll-top:hover { background: var(--aura-violet); border-color: var(--aura-violet); box-shadow: 0 12px 32px rgba(167,139,250,0.35); }
+
+/* ── Cart FAB ─────────────────────────────────────────────── */
+.cart-fab { position: fixed; bottom: 5.5rem; right: 2rem; width: 44px; height: 44px; background: hsl(258 30% 16% / 0.85); border: 1px solid hsl(258 26% 30%); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 90; backdrop-filter: blur(16px); color: hsl(252 100% 97%); text-decoration: none; transition: all 0.2s; box-shadow: 0 8px 24px rgba(0,0,0,0.4); }
+.cart-fab:hover { background: var(--aura-sky); border-color: var(--aura-sky); color: hsl(260 25% 4%); box-shadow: 0 12px 32px rgba(125,211,252,0.25); text-decoration: none; }
+.cart-fab__count { position: absolute; top: -4px; right: -4px; min-width: 18px; height: 18px; background: var(--aura-rose); border-radius: 999px; font-size: 0.62rem; font-weight: 700; color: #fff; display: flex; align-items: center; justify-content: center; padding: 0 4px; border: 2px solid hsl(260 25% 4%); line-height: 1; }
+
+/* ── Category strip ───────────────────────────────────────── */
+.cat-strip { overflow-x: auto; scrollbar-width: none; display: flex; gap: 1rem; padding-bottom: 0.75rem; }
+.cat-strip::-webkit-scrollbar { display: none; }
+.cat-card { flex-shrink: 0; width: 100px; display: flex; flex-direction: column; align-items: center; gap: 0.65rem; cursor: pointer; text-decoration: none; }
+.cat-card:hover { text-decoration: none; }
+.cat-card__icon { width: 68px; height: 68px; border-radius: 18px; background: hsl(258 30% 14%); border: 1px solid hsl(258 26% 22%); display: flex; align-items: center; justify-content: center; transition: all 0.22s cubic-bezier(0.16,1,0.3,1); position: relative; overflow: hidden; }
+.cat-card__icon::after { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(255,255,255,0.06), transparent); pointer-events: none; }
+.cat-card:hover .cat-card__icon { transform: translateY(-5px) scale(1.06); box-shadow: 0 14px 32px rgba(0,0,0,0.35); }
+.cat-card__label { font-size: 0.73rem; font-weight: 600; color: hsl(256 22% 60%); text-align: center; transition: color 0.15s; letter-spacing: 0.01em; }
+.cat-card:hover .cat-card__label { color: hsl(252 100% 97%); }
+
+/* ── Trust badges ─────────────────────────────────────────── */
+.trust-strip { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px,1fr)); gap: 1.25rem; border-top: 1px solid hsl(258 26% 16%); border-bottom: 1px solid hsl(258 26% 16%); padding: 2rem 0; }
+.trust-item { display: flex; align-items: center; gap: 0.85rem; }
+.trust-icon { width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.trust-title { font-weight: 700; font-size: 0.86rem; color: hsl(252 100% 97%); margin: 0; }
+.trust-sub { font-size: 0.72rem; color: hsl(256 22% 52%); margin: 0.15rem 0 0; }
+
+/* ── Carousel ─────────────────────────────────────────────── */
+.carousel-track { display: flex; gap: 1.1rem; overflow-x: auto; scrollbar-width: none; padding-bottom: 0.75rem; scroll-snap-type: x mandatory; }
+.carousel-track::-webkit-scrollbar { display: none; }
+.carousel-item { flex-shrink: 0; width: 240px; scroll-snap-align: start; }
+.carousel-arrow { width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; background: hsl(258 30% 14%); border: 1px solid hsl(258 26% 24%); border-radius: 50%; cursor: pointer; color: hsl(256 22% 65%); transition: all 0.15s; }
+.carousel-arrow:hover { background: hsl(258 26% 22%); color: hsl(252 100% 97%); border-color: hsl(258 26% 35%); }
+
+/* ── View toggle (grid / list) ────────────────────────────── */
+.view-toggle { display: flex; gap: 0.25rem; }
+.view-toggle__btn { width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; background: hsl(258 30% 12%); border: 1px solid hsl(258 26% 22%); border-radius: calc(var(--radius) - 4px); cursor: pointer; color: hsl(256 22% 52%); transition: all 0.15s; }
+.view-toggle__btn:hover { color: hsl(252 100% 97%); border-color: hsl(258 26% 32%); }
+.view-toggle__btn--active { background: hsl(262 91% 76% / 0.12); border-color: var(--aura-violet); color: var(--aura-violet); }
+
+/* ── Product list view ────────────────────────────────────── */
+.grid-products--list { display: flex; flex-direction: column; gap: 0.85rem; }
+.pcard--list { flex-direction: row; }
+.pcard--list .pcard__link { flex-direction: row; flex: 1; min-width: 0; }
+.pcard--list .pcard__img-wrap { width: 150px; min-width: 150px; aspect-ratio: 1; flex-shrink: 0; }
+.pcard--list .pcard__body { flex: 1; padding: 1.1rem 1.25rem; gap: 0.4rem; }
+.pcard--list .pcard__title { -webkit-line-clamp: 3; font-size: 1rem; }
+.pcard--list .pcard__add { width: auto; min-width: 130px; border-top: none; border-left: 1px solid hsl(258 26% 20%); padding: 0 1.25rem; flex-direction: column; gap: 0.35rem; font-size: 0.84rem; }
+@media (max-width: 640px) { .pcard--list { flex-direction: column; } .pcard--list .pcard__img-wrap { width: 100%; aspect-ratio: 1; } .pcard--list .pcard__add { border-left: none; border-top: 1px solid hsl(258 26% 20%); width: 100%; } }
+
+/* ── Mega menu (shop dropdown) ────────────────────────────── */
+.mega-wrap { position: relative; }
+.mega-menu { position: absolute; top: calc(100% + 10px); left: 50%; transform: translateX(-50%); min-width: 340px; background: hsl(258 30% 10%); border: 1px solid hsl(258 26% 22%); border-radius: var(--radius); padding: 1rem; z-index: 200; box-shadow: 0 24px 64px rgba(0,0,0,0.55), 0 0 0 1px rgba(255,255,255,0.03); }
+.mega-menu__title { font-size: 0.67rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.09em; color: hsl(256 22% 45%); margin: 0 0 0.6rem; padding: 0 0.4rem; }
+.mega-menu__grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.25rem; }
+.mega-item { display: flex; align-items: center; gap: 0.55rem; padding: 0.5rem 0.65rem; border-radius: calc(var(--radius) - 4px); font-size: 0.83rem; font-weight: 500; color: hsl(256 22% 68%); text-decoration: none; transition: all 0.12s; }
+.mega-item:hover { background: hsl(258 26% 17%); color: hsl(252 100% 97%); text-decoration: none; }
+.mega-item__dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+
+/* ── Page enter animation ─────────────────────────────────── */
+@keyframes page-enter { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+.page-enter { animation: page-enter 0.38s cubic-bezier(0.16,1,0.3,1) forwards; }
+
+/* ── Enhanced hero overlay ─────────────────────────────────── */
+.hero__bottom-mask { position: absolute; bottom: 0; left: 0; right: 0; height: 120px; background: linear-gradient(to top, hsl(260 25% 4%), transparent); pointer-events: none; z-index: 1; }
+
+/* ── Announcement bar ─────────────────────────────────────── */
+.announcement-bar { background: linear-gradient(90deg, hsl(262 91% 76% / 0.08), hsl(199 95% 74% / 0.06), hsl(262 91% 76% / 0.08)); border-bottom: 1px solid hsl(258 26% 18%); padding: 0.45rem 0; text-align: center; font-size: 0.75rem; color: hsl(256 22% 65%); letter-spacing: 0.02em; display: flex; align-items: center; justify-content: center; gap: 0.5rem; }
+.announcement-bar strong { color: var(--aura-violet); }
+
+/* ── Improved product detail image gallery ───────────────── */
+.product-detail__img { cursor: zoom-in; }
+.product-detail__img:hover img { transform: scale(1.03); transition: transform 0.4s ease; }
+.product-detail__img img { transition: transform 0.4s ease; }
+
+/* ── Sort/filter header row ──────────────────────────────── */
+.shop-toolbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; gap: 0.75rem; flex-wrap: wrap; }
+.shop-toolbar__left { display: flex; align-items: center; gap: 0.75rem; }
+.shop-toolbar__sort { background: hsl(258 30% 12%); border: 1px solid hsl(258 26% 22%); border-radius: calc(var(--radius) - 2px); padding: 0.4rem 0.75rem; color: hsl(252 100% 97%); font-size: 0.82rem; cursor: pointer; outline: none; }
+
+/* ── Ratings histogram (product detail) ──────────────────── */
+.rating-bar { display: flex; align-items: center; gap: 0.5rem; font-size: 0.78rem; }
+.rating-bar__track { flex: 1; height: 5px; background: hsl(258 26% 20%); border-radius: 999px; overflow: hidden; }
+.rating-bar__fill { height: 100%; background: var(--aura-violet); border-radius: 999px; transition: width 0.6s ease; }
+
+/* ── Glassmorphism banner ─────────────────────────────────── */
+.glass-banner { background: linear-gradient(135deg, hsl(262 91% 76% / 0.07), hsl(199 95% 74% / 0.05)); backdrop-filter: blur(12px); border: 1px solid hsl(258 26% 22%); border-radius: var(--radius); padding: 2rem; position: relative; overflow: hidden; }
+.glass-banner::before { content: ''; position: absolute; top: -40%; right: -10%; width: 250px; height: 250px; background: radial-gradient(circle, rgba(167,139,250,0.08), transparent); border-radius: 50%; pointer-events: none; }
+
+/* ── Newsletter strip ────────────────────────────────────── */
+.newsletter { display: flex; flex-direction: column; align-items: center; gap: 1rem; padding: 4rem 2rem; text-align: center; }
+.newsletter h2 { font-family: 'Fraunces', Georgia, serif; font-size: 2rem; font-weight: 700; margin: 0; }
+.newsletter p { font-size: 0.95rem; color: hsl(256 22% 60%); margin: 0; max-width: 480px; }
+.newsletter__form { display: flex; gap: 0.5rem; width: 100%; max-width: 440px; }
+.newsletter__form input { flex: 1; }
+@media (max-width: 480px) { .newsletter__form { flex-direction: column; } }
+
+/* ── Back-in-stock / notification dot ───────────────────── */
+.live-dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: #34d399; box-shadow: 0 0 8px #34d399; animation: pulse 2s infinite; margin-right: 0.3rem; }
+
+/* ── Section divider ─────────────────────────────────────── */
+.section-divider { height: 1px; background: linear-gradient(90deg, transparent, hsl(258 26% 18%), transparent); margin: 2.5rem 0; }

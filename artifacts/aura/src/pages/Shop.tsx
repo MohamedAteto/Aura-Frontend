@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { SlidersHorizontal, PackageSearch } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { SlidersHorizontal, PackageSearch, LayoutGrid, List, X } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { ProductCard } from '../components/ProductCard';
 import { SkeletonGrid } from '../components/SkeletonGrid';
 import { SearchBar } from '../components/SearchBar';
@@ -17,15 +17,23 @@ const RATINGS = [
   { label: '2★ & up', value: '2' },
 ];
 
+const SORT_OPTIONS = [
+  { value: 'asc', label: 'Price: Low → High' },
+  { value: 'high', label: 'Price: High → Low' },
+  { value: 'rating', label: 'Top Rated' },
+  { value: 'new', label: 'Newest First' },
+];
+
 export function Shop() {
   const params = new URLSearchParams(window.location.search);
   const [q, setQ] = useState(params.get('q') || '');
   const [categoryId, setCategoryId] = useState(params.get('category') || '');
-  const [sort, setSort] = useState(params.get('sort') || 'asc');
-  const [minPrice, setMinPrice] = useState(params.get('minPrice') || '');
-  const [maxPrice, setMaxPrice] = useState(params.get('maxPrice') || '');
-  const [minRating, setMinRating] = useState(params.get('minRating') || '');
+  const [sort, setSort] = useState('asc');
+  const [minPrice, setMinPrice] = useState('');
+  const [maxPrice, setMaxPrice] = useState('');
+  const [minRating, setMinRating] = useState('');
   const [page, setPage] = useState(1);
+  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
 
   const [data, setData] = useState<PagedData | null>(null);
   const [categories, setCategories] = useState<Category[]>([]);
@@ -68,22 +76,38 @@ export function Shop() {
 
   return (
     <div className="page-pad">
-      <header className="page-header">
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <h1 style={{ fontFamily: 'Fraunces, Georgia, serif', fontSize: '2rem', fontWeight: 700, margin: 0 }}>Shop</h1>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <SlidersHorizontal size={15} color="hsl(256 22% 55%)" />
-            <span style={{ fontSize: '0.82rem', color: 'hsl(256 22% 55%)' }}>Filters</span>
+      {/* Page header */}
+      <motion.header className="page-header" initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '0.75rem' }}>
+          <div>
+            <h1 style={{ fontFamily: 'Fraunces, Georgia, serif', fontSize: '2rem', fontWeight: 700, margin: '0 0 0.15rem' }}>Shop</h1>
+            {data && <p style={{ margin: 0, fontSize: '0.82rem', color: 'hsl(256 22% 50%)' }}>{data.totalCount ?? 0} products</p>}
+          </div>
+          {/* Active filter chips */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', flexWrap: 'wrap' }}>
+            <AnimatePresence>
+              {q && (
+                <motion.button type="button" className="btn btn--ghost btn--sm" initial={{ opacity: 0, scale: 0.85 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.85 }} onClick={() => setQ('')} style={{ gap: '0.3rem', fontSize: '0.75rem' }}>
+                  "{q}" <X size={11} />
+                </motion.button>
+              )}
+              {categoryId && (
+                <motion.button type="button" className="btn btn--ghost btn--sm" initial={{ opacity: 0, scale: 0.85 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.85 }} onClick={() => setCategoryId('')} style={{ gap: '0.3rem', fontSize: '0.75rem' }}>
+                  Category <X size={11} />
+                </motion.button>
+              )}
+            </AnimatePresence>
             {activeFilterCount > 0 && (
-              <span style={{ background: 'var(--aura-violet)', color: 'hsl(260 25% 4%)', borderRadius: '999px', fontSize: '0.68rem', fontWeight: 700, padding: '1px 7px' }}>
-                {activeFilterCount}
-              </span>
+              <button type="button" className="btn btn--ghost btn--sm" style={{ fontSize: '0.75rem', color: 'var(--aura-rose)', borderColor: 'rgba(251,113,133,0.3)' }} onClick={clearAll}>
+                Clear all ({activeFilterCount})
+              </button>
             )}
           </div>
         </div>
-      </header>
+      </motion.header>
 
       <div className="shop-layout">
+        {/* Sidebar filters */}
         <aside className="shop-filters">
           <SearchBar onSearch={v => { setQ(v); setPage(1); }} initialValue={q} />
 
@@ -96,10 +120,9 @@ export function Shop() {
           </div>
 
           <div className="field">
-            <label className="field__label">Sort by price</label>
+            <label className="field__label">Sort</label>
             <select className="input" value={sort} onChange={e => { setSort(e.target.value); setPage(1); }}>
-              <option value="asc">Low → High</option>
-              <option value="high">High → Low</option>
+              {SORT_OPTIONS.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
             </select>
           </div>
 
@@ -107,7 +130,7 @@ export function Shop() {
             <label className="field__label">Price range ($)</label>
             <div className="shop-price-range">
               <input className="input input--sm" type="number" placeholder="Min" min="0" value={minPrice} onChange={e => { setMinPrice(e.target.value); setPage(1); }} />
-              <span className="shop-price-range__sep">to</span>
+              <span className="shop-price-range__sep">–</span>
               <input className="input input--sm" type="number" placeholder="Max" min="0" value={maxPrice} onChange={e => { setMaxPrice(e.target.value); setPage(1); }} />
             </div>
           </div>
@@ -119,46 +142,90 @@ export function Shop() {
                 <motion.button key={r.value} type="button"
                   className={`shop-rating-btn ${minRating === r.value ? 'shop-rating-btn--active' : ''}`}
                   onClick={() => { setMinRating(minRating === r.value ? '' : r.value); setPage(1); }}
-                  whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }}>
+                  whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.96 }}>
                   {r.label}
                 </motion.button>
               ))}
             </div>
           </div>
 
-          {activeFilterCount > 0 && (
-            <button type="button" className="btn btn--ghost btn--sm" style={{ width: '100%', justifyContent: 'center' }} onClick={clearAll}>
-              Clear all filters
-            </button>
-          )}
+          {/* In stock toggle */}
+          <div style={{ paddingTop: '0.25rem', borderTop: '1px solid hsl(258 26% 18%)' }}>
+            <p style={{ fontSize: '0.75rem', fontWeight: 700, color: 'hsl(256 22% 55%)', textTransform: 'uppercase', letterSpacing: '0.05em', margin: '0.75rem 0 0.5rem' }}>Availability</p>
+            <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer', fontSize: '0.82rem', color: 'hsl(256 22% 70%)' }}>
+              <input type="checkbox" style={{ accentColor: 'var(--aura-violet)' }} /> In stock only
+            </label>
+          </div>
         </aside>
 
+        {/* Products area */}
         <div>
+          {/* Toolbar: sort + view toggle */}
+          <div className="shop-toolbar">
+            <div className="shop-toolbar__left">
+              <SlidersHorizontal size={14} color="hsl(256 22% 50%)" />
+              <span style={{ fontSize: '0.78rem', color: 'hsl(256 22% 50%)' }}>
+                {data ? `${data.totalCount ?? 0} products` : 'Loading…'}
+              </span>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+              <select className="shop-toolbar__sort" value={sort} onChange={e => { setSort(e.target.value); setPage(1); }}>
+                {SORT_OPTIONS.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
+              </select>
+              <div className="view-toggle">
+                <button type="button" className={`view-toggle__btn ${viewMode === 'grid' ? 'view-toggle__btn--active' : ''}`} onClick={() => setViewMode('grid')} aria-label="Grid view">
+                  <LayoutGrid size={14} />
+                </button>
+                <button type="button" className={`view-toggle__btn ${viewMode === 'list' ? 'view-toggle__btn--active' : ''}`} onClick={() => setViewMode('list')} aria-label="List view">
+                  <List size={14} />
+                </button>
+              </div>
+            </div>
+          </div>
+
           {err && <div className="form-error" style={{ marginBottom: '1rem' }}>{err}</div>}
+
           {loading && <SkeletonGrid />}
-          {!loading && data && (
-            <>
-              {data.items?.length === 0
-                ? <EmptyState icon={PackageSearch} message="No products match your filters." ctaLabel="Clear filters" ctaTo="/shop" />
-                : (
-                  <>
-                    <div style={{ fontSize: '0.8rem', color: 'hsl(256 22% 55%)', marginBottom: '1rem' }}>
-                      {data.totalCount} product{data.totalCount !== 1 ? 's' : ''} found
+
+          <AnimatePresence mode="wait">
+            {!loading && data && (
+              <motion.div key={`${viewMode}-${page}`} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.2 }}>
+                {data.items?.length === 0
+                  ? <EmptyState icon={PackageSearch} message="No products match your filters." ctaLabel="Clear filters" ctaTo="/shop" />
+                  : (
+                    <div className={viewMode === 'grid' ? 'grid-products' : 'grid-products--list'}>
+                      {data.items.map((p, i) => (
+                        <ProductCard key={p.id} product={p} index={i} viewMode={viewMode} />
+                      ))}
                     </div>
-                    <div className="grid-products">
-                      {data.items.map((p, i) => <ProductCard key={p.id} product={p} index={i} />)}
+                  )}
+
+                {(data.totalPages ?? 1) > 1 && (
+                  <div className="pagination" style={{ marginTop: '2rem' }}>
+                    <button type="button" className="btn btn--ghost btn--sm" disabled={page <= 1} onClick={() => { setPage(p => p - 1); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
+                      ← Previous
+                    </button>
+                    <div style={{ display: 'flex', gap: '0.25rem' }}>
+                      {Array.from({ length: Math.min(data.totalPages, 5) }, (_, i) => {
+                        const pageNum = i + 1;
+                        return (
+                          <button key={pageNum} type="button"
+                            className={`view-toggle__btn ${page === pageNum ? 'view-toggle__btn--active' : ''}`}
+                            onClick={() => { setPage(pageNum); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+                            style={{ width: 32, height: 32, fontSize: '0.78rem', fontWeight: page === pageNum ? 700 : 400 }}>
+                            {pageNum}
+                          </button>
+                        );
+                      })}
                     </div>
-                  </>
+                    <button type="button" className="btn btn--ghost btn--sm" disabled={page >= data.totalPages} onClick={() => { setPage(p => p + 1); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
+                      Next →
+                    </button>
+                  </div>
                 )}
-              {(data.totalPages ?? 1) > 1 && (
-                <div className="pagination">
-                  <button type="button" className="btn btn--ghost btn--sm" disabled={page <= 1} onClick={() => setPage(p => p - 1)}>Previous</button>
-                  <span className="pagination__meta">Page {data.page} of {data.totalPages}</span>
-                  <button type="button" className="btn btn--ghost btn--sm" disabled={page >= data.totalPages} onClick={() => setPage(p => p + 1)}>Next</button>
-                </div>
-              )}
-            </>
-          )}
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </div>
     </div>

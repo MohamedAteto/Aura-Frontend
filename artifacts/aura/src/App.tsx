@@ -2,6 +2,7 @@ import { Switch, Route, Router as WouterRouter } from 'wouter';
 import { Toaster } from 'sonner';
 import { AuthProvider } from './context/AuthContext';
 import { WishlistProvider } from './context/WishlistContext';
+import { CartProvider } from './context/CartContext';
 import { Layout } from './components/Layout';
 import { AdminLayout } from './components/AdminLayout';
 import { ProtectedRoute } from './components/ProtectedRoute';
@@ -26,84 +27,31 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 function Router() {
   return (
     <Switch>
-      {/* Admin routes */}
       <Route path="/admin">
-        {() => (
-          <ProtectedRoute adminOnly>
-            <AdminLayout>
-              <AdminDashboard />
-            </AdminLayout>
-          </ProtectedRoute>
-        )}
+        {() => <ProtectedRoute adminOnly><AdminLayout><AdminDashboard /></AdminLayout></ProtectedRoute>}
       </Route>
       <Route path="/admin/products">
-        {() => (
-          <ProtectedRoute adminOnly>
-            <AdminLayout>
-              <AdminProducts />
-            </AdminLayout>
-          </ProtectedRoute>
-        )}
+        {() => <ProtectedRoute adminOnly><AdminLayout><AdminProducts /></AdminLayout></ProtectedRoute>}
       </Route>
       <Route path="/admin/orders">
-        {() => (
-          <ProtectedRoute adminOnly>
-            <AdminLayout>
-              <AdminOrders />
-            </AdminLayout>
-          </ProtectedRoute>
-        )}
+        {() => <ProtectedRoute adminOnly><AdminLayout><AdminOrders /></AdminLayout></ProtectedRoute>}
       </Route>
       <Route path="/admin/users">
-        {() => (
-          <ProtectedRoute adminOnly>
-            <AdminLayout>
-              <AdminUsers />
-            </AdminLayout>
-          </ProtectedRoute>
-        )}
+        {() => <ProtectedRoute adminOnly><AdminLayout><AdminUsers /></AdminLayout></ProtectedRoute>}
       </Route>
       <Route path="/admin/coupons">
-        {() => (
-          <ProtectedRoute adminOnly>
-            <AdminLayout>
-              <AdminCoupons />
-            </AdminLayout>
-          </ProtectedRoute>
-        )}
+        {() => <ProtectedRoute adminOnly><AdminLayout><AdminCoupons /></AdminLayout></ProtectedRoute>}
       </Route>
-
-      {/* Main routes */}
-      <Route path="/">
-        {() => <Layout><Home /></Layout>}
-      </Route>
-      <Route path="/shop">
-        {() => <Layout><Shop /></Layout>}
-      </Route>
-      <Route path="/shop/:id">
-        {(params) => <Layout><ProductPage id={params.id} /></Layout>}
-      </Route>
-      <Route path="/cart">
-        {() => <Layout><Cart /></Layout>}
-      </Route>
-      <Route path="/login">
-        {() => <Layout><Login /></Layout>}
-      </Route>
-      <Route path="/register">
-        {() => <Layout><Register /></Layout>}
-      </Route>
-      <Route path="/orders">
-        {() => <Layout><Orders /></Layout>}
-      </Route>
-      <Route path="/profile">
-        {() => <Layout><Profile /></Layout>}
-      </Route>
-      <Route path="/wishlist">
-        {() => <Layout><Wishlist /></Layout>}
-      </Route>
-      <Route>
-        {() => <Layout><NotFound /></Layout>}
-      </Route>
+      <Route path="/">{() => <Layout><Home /></Layout>}</Route>
+      <Route path="/shop">{() => <Layout><Shop /></Layout>}</Route>
+      <Route path="/shop/:id">{(p) => <Layout><ProductPage id={p.id} /></Layout>}</Route>
+      <Route path="/cart">{() => <Layout><Cart /></Layout>}</Route>
+      <Route path="/login">{() => <Layout><Login /></Layout>}</Route>
+      <Route path="/register">{() => <Layout><Register /></Layout>}</Route>
+      <Route path="/orders">{() => <Layout><Orders /></Layout>}</Route>
+      <Route path="/profile">{() => <Layout><Profile /></Layout>}</Route>
+      <Route path="/wishlist">{() => <Layout><Wishlist /></Layout>}</Route>
+      <Route>{() => <Layout><NotFound /></Layout>}</Route>
     </Switch>
   );
 }
@@ -112,20 +60,22 @@ export default function App() {
   return (
     <AuthProvider>
       <WishlistProvider>
-        <WouterRouter base={base}>
-          <Router />
-        </WouterRouter>
-        <Toaster
-          position="top-right"
-          richColors
-          toastOptions={{
-            style: {
-              background: 'hsl(258 30% 14%)',
-              border: '1px solid hsl(258 26% 24%)',
-              color: 'hsl(252 100% 97%)',
-            },
-          }}
-        />
+        <CartProvider>
+          <WouterRouter base={base}>
+            <Router />
+          </WouterRouter>
+          <Toaster
+            position="top-right"
+            richColors
+            toastOptions={{
+              style: {
+                background: 'hsl(258 30% 14%)',
+                border: '1px solid hsl(258 26% 24%)',
+                color: 'hsl(252 100% 97%)',
+              },
+            }}
+          />
+        </CartProvider>
       </WishlistProvider>
     </AuthProvider>
   );
