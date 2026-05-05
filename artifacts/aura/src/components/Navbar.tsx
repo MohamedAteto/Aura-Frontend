@@ -4,11 +4,12 @@ import { motion, AnimatePresence, LayoutGroup } from 'framer-motion';
 import {
   User, Menu, X, Heart, LayoutDashboard,
   ShoppingCart, Headphones, Shirt, Smartphone, Monitor,
-  Footprints, Dumbbell, Sparkles, Home, ChevronDown
+  Footprints, Dumbbell, Sparkles, Home, ChevronDown, Search
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useWishlist } from '../context/WishlistContext';
 import { useCart } from '../context/CartContext';
+import { SearchAutocomplete } from './SearchAutocomplete';
 
 const CATEGORIES = [
   { label: 'Electronics', icon: Monitor, color: '#7dd3fc', q: 'Electronics' },
@@ -172,6 +173,11 @@ export function Navbar() {
             ))}
           </LayoutGroup>
         </nav>
+
+        {/* Search bar — desktop */}
+        <div className="nav-search-wrap">
+          <SearchAutocomplete />
+        </div>
 
         {/* Right side icons */}
         <div className="nav-auth" style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>

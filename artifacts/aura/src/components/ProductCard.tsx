@@ -1,7 +1,7 @@
 import { Link } from 'wouter';
 import { motion } from 'framer-motion';
 import { useState } from 'react';
-import { ShoppingCart, Heart } from 'lucide-react';
+import { ShoppingCart, Heart, Eye } from 'lucide-react';
 import { toast } from 'sonner';
 import { StarRating } from './StarRating';
 import { mediaUrl } from '../lib/api';
@@ -9,16 +9,11 @@ import api from '../lib/api';
 import { useAuth } from '../context/AuthContext';
 import { useWishlist } from '../context/WishlistContext';
 import { useCart } from '../context/CartContext';
+import { QuickViewContext } from '../App';
 
 interface Product {
-  id: number;
-  name: string;
-  price: number;
-  imageUrl?: string;
-  categoryName?: string;
-  averageRating?: number;
-  reviewCount?: number;
-  inStock?: boolean;
+  id: number; name: string; price: number; imageUrl?: string;
+  categoryName?: string; averageRating?: number; reviewCount?: number; inStock?: boolean;
 }
 
 interface Props {
@@ -59,9 +54,12 @@ export function ProductCard({ product, index = 0, viewMode = 'grid' }: Props) {
   const handleWishlist = (e: React.MouseEvent) => {
     e.preventDefault();
     toggle(product.id);
-    toast(wishlisted ? 'Removed from wishlist' : 'Saved to wishlist', {
-      icon: wishlisted ? '💔' : '❤️',
-    });
+    toast(wishlisted ? 'Removed from wishlist' : 'Saved to wishlist', { icon: wishlisted ? '💔' : '❤️' });
+  };
+
+  const handleQuickView = (e: React.MouseEvent) => {
+    e.preventDefault();
+    QuickViewContext.open(product.id);
   };
 
   return (
@@ -84,7 +82,11 @@ export function ProductCard({ product, index = 0, viewMode = 'grid' }: Props) {
           <button type="button" className={`pcard__wish ${wishlisted ? 'pcard__wish--active' : ''}`} onClick={handleWishlist} aria-label="Toggle wishlist">
             <Heart size={14} fill={wishlisted ? '#fb7185' : 'none'} color={wishlisted ? '#fb7185' : 'hsl(256 22% 65%)'} strokeWidth={2} />
           </button>
-          {!isList && <div className="pcard__overlay"><span className="pcard__quick">Quick view →</span></div>}
+          <div className="pcard__overlay">
+            <button type="button" className="pcard__quick-btn" onClick={handleQuickView}>
+              <Eye size={13} /> Quick view
+            </button>
+          </div>
         </div>
 
         <div className="pcard__body">
