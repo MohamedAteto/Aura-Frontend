@@ -1,0 +1,14 @@
+[build]
+  command = "pnpm install && pnpm --filter @workspace/aura run build"
+  publish = "artifacts/aura/dist/public"
+
+[build.environment]
+  NODE_VERSION  = "20"
+  PNPM_VERSION  = "9"
+  NODE_ENV      = "production"
+
+# SPA fallback — every route serves index.html so wouter handles routing
+[[redirects]]
+  from   = "/*"
+  to     = "/index.html"
+  status = 200
